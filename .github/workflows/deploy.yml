@@ -4,7 +4,7 @@ on:
     branches:
       - main
   repository_dispatch:
-    types: [notes_updated] # 核心：只要收到 obhub 发来的 notes_updated 暗号，立刻触发
+    types: [notes_updated]
 
 permissions:
   contents: write
@@ -30,7 +30,7 @@ jobs:
 
       - name: Fetch Latest Obsidian Notes from Obhub
         env:
-          MY_TOKEN: ${{ secrets.QUARTZ_TOKEN }} # 👈 显式在这里捕获密钥
+          MY_TOKEN: ${{ secrets.QUARTZ_TOKEN }}
         run: |
           git clone https://$MY_TOKEN@github.com/ima-rius/obhub.git content
 
