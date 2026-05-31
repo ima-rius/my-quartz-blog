@@ -17,7 +17,6 @@ concurrency:
 
 jobs:
   deploy:
-    # 彻底删除了 environment 限制，让全局密钥自由解锁
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Blog Source
@@ -27,10 +26,11 @@ jobs:
         run: rm -rf content
 
       - name: Fetch Latest Obsidian Notes from Obhub
-        env:
-          MY_TOKEN: ${{ secrets.QUARTZ_TOKEN }}
-        run: |
-          git clone https://$MY_TOKEN@github.com/ima-rius/obhub.git content
+        uses: actions/checkout@v4
+        with:
+          repository: 'ima-rius/obhub'
+          path: 'content'
+          token: ${{ secrets.QUARTZ_TOKEN }} # 👈 用最纯粹的参数传递，逼它就范
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
