@@ -33,6 +33,7 @@ jobs:
         with:
           repository: 'ima-rius/obhub' # 去抓你最新的笔记仓库
           path: 'content'
+          token: ${{ secrets.QUARTZ_TOKEN }} # 👈 核心：加上这一行，带上钥匙去敲门！
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
