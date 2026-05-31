@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+  repository_dispatch:      # 加上这一行，允许接收外来信号
+    types: [notes_updated]  # 加上这一行
 permissions:
   contents: write
   pages: write
