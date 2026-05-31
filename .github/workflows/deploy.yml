@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - main
-  repository_dispatch:
-    types: [notes_updated]
 
 permissions:
   contents: write
@@ -17,40 +15,29 @@ concurrency:
 
 jobs:
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Blog Source
-        uses: actions/checkout@v4
-
-      - name: Clear Default Content
-        run: rm -rf content
-
-      - name: Fetch Latest Obsidian Notes from Obhub
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: 'ima-rius/obhub'
-          path: 'content'
-          token: ${{ secrets.QUARTZ_TOKEN }} # 👈 用最纯粹的参数传递，逼它就范
-
+          fetch-depth: 0
       - name: Setup Pages
         uses: actions/configure-pages@v5
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
       - name: Install Dependencies
         run: npm ci
-
       - name: Build Quartz
         run: npx quartz build
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: public
-
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
