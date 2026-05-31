@@ -17,9 +17,7 @@ concurrency:
 
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    # 彻底删除了 environment 限制，让全局密钥自由解锁
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Blog Source
