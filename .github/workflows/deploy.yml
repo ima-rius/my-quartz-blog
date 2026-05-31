@@ -29,9 +29,10 @@ jobs:
         run: rm -rf content
 
       - name: Fetch Latest Obsidian Notes from Obhub
-        # 👈 核心：用原生的 https 裹挟 Token 强行克隆，这在 Linux 环境下是百分之百不会触发任何权限漏洞的
+        env:
+          MY_TOKEN: ${{ secrets.QUARTZ_TOKEN }} # 👈 显式在这里捕获密钥
         run: |
-          git clone https://${{ secrets.QUARTZ_TOKEN }}@github.com/ima-rius/obhub.git content
+          git clone https://$MY_TOKEN@github.com/ima-rius/obhub.git content
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
