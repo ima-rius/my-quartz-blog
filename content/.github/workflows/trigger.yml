@@ -1,0 +1,29 @@
+name: Push Notes to Quartz Blog
+on:
+  push:
+    branches:
+      - main # 如果你的笔记仓库主分支叫 master，这里请改成 master
+
+jobs:
+  push-to-blog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Notes Source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push content folder to Blog Repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          # 因为这个任务是你在本地用 Obsidian 推送触发的，obhub 里的 QUARTZ_TOKEN 会以最高权限百分百完美加载！
+          API_TOKEN_GITHUB: ${{ secrets.QUARTZ_TOKEN }}
+        with:
+          source-directory: '.' # 把你当前笔记仓库里的所有笔记
+          destination-github-username: 'ima-rius'
+          destination-repository-name: 'my-quartz-blog'
+          target-branch: 'main'
+          target-directory: 'content' # 强行跨库精准塞进博客仓库的 content 文件夹里
+          user-email: 'github-actions[bot]@users.noreply.github.com'
+          user-name: 'github-actions[bot]'
+          commit-message: 'Automated notes sync from obhub'

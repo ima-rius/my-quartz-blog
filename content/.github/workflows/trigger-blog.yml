@@ -1,0 +1,17 @@
+name: Trigger Quartz Blog Update
+on:
+  push:
+    branches:
+      - main     # 如果你的笔记库主分支叫 master，这里就改成 master
+
+jobs:
+  ping-blog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pinging Quartz Repository
+        run: |
+          curl -X POST \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: token ${{ secrets.QUARTZ_TOKEN }}" \
+          https://api.github.com/repos/ima-rius/my-quartz-blog/dispatches \
+          -d '{"event_type": "notes_updated"}'
