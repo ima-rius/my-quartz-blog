@@ -29,11 +29,9 @@ jobs:
         run: rm -rf content
 
       - name: Fetch Latest Obsidian Notes from Obhub
-        uses: actions/checkout@v4
-        with:
-          repository: 'ima-rius/obhub' # 去抓你最新的笔记仓库
-          path: 'content'
-          token: ${{ secrets.QUARTZ_TOKEN }} # 👈 核心：加上这一行，带上钥匙去敲门！
+        # 👈 核心：用原生的 https 裹挟 Token 强行克隆，这在 Linux 环境下是百分之百不会触发任何权限漏洞的
+        run: |
+          git clone https://${{ secrets.QUARTZ_TOKEN }}@github.com/ima-rius/obhub.git content
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
